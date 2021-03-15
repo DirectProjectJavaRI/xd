@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>xd</artifactId>
     <name>NHIN Direct XD* Web Endpoint</name>
-    <version>6.0.1-SNAPSHOT</version>
+    <version>6.0.1</version>
     <description>NHIN Direct XD Component</description>
     <inceptionYear>2010</inceptionYear>
     <packaging>war</packaging>
@@ -170,7 +170,7 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>xd-common</artifactId>
-            <version>6.0.1-SNAPSHOT</version>
+            <version>6.0</version>
         </dependency>
     </dependencies>
 
@@ -300,8 +300,7 @@
 			                </goals>
 			              </execution>
 			            </executions>
-		            </plugin>
-				    <!-- for release only		            
+		            </plugin>	            
 			        <plugin>
 		               <groupId>org.apache.maven.plugins</groupId>
 		               <artifactId>maven-gpg-plugin</artifactId>
@@ -315,7 +314,6 @@
 		                 </execution>
 		               </executions>
 		            </plugin>
-		            -->
                 </plugins>
             </build>
         </profile>
