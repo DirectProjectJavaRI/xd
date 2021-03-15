@@ -3,7 +3,7 @@ applications:
 - name: direct-xd
   instances: 1
   buildpack: java_buildpack
-  path: target/xd-6.0-SNAPSHOT.war
+  path: target/xd-6.0.1-SNAPSHOT.war
   env: 
     spring.cloud.config.label: master    
   services:
