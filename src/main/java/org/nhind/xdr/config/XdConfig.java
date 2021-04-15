@@ -54,10 +54,10 @@ public class XdConfig
         MAIL_HOST("xd.MailHost", "localhost"), 
         MAIL_USER("xd.MailUser", "direct"), 
         MAIL_PASS("xd.MailPass"), 
-        AUDIT_METHOD("xd.AuditMethod"), 
+        AUDIT_METHOD("xd.AuditMethod", "file"), 
         AUDIT_HOST("xd.AuditHost"), 
         AUDIT_PORT("xd.AuditPort"), 
-        AUDIT_FILE("xd.AuditFile");
+        AUDIT_FILE("xd.AuditFile", "./auditFile.txt");
 
         private String key;
         private String dflt;
