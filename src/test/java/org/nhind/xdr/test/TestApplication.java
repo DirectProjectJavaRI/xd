@@ -1,5 +1,16 @@
 package org.nhind.xdr.test;
 
+
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.mock;
+
+import java.util.Collections;
+
+import javax.mail.internet.InternetAddress;
+
+import org.nhindirect.xd.routing.RoutingResolver;
 import org.nhind.xdm.boot.XDApplication;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,7 +20,9 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Primary;
 
 @SpringBootApplication(exclude = {
 	    DataSourceAutoConfiguration.class, 
@@ -28,5 +41,19 @@ public class TestApplication extends SpringBootServletInitializer
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) 
 	{
 	    return application.sources(XDApplication.class);
-	}	    
+	}
+	
+	@Bean 
+	@Primary
+	public RoutingResolver mockResolver() throws Exception
+	{
+		final RoutingResolver resolver = mock(RoutingResolver.class);
+	
+		final InternetAddress recipAddr = new InternetAddress("recip@test.com");
+		
+		when(resolver.hasSmtpEndpoints(any())).thenReturn(true);
+		when(resolver.getXdEndpoints(any())).thenReturn(Collections.singletonList(recipAddr.toString()));
+		
+		return resolver;
+	}
 }
