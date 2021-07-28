@@ -11,21 +11,21 @@ import javax.mail.internet.MimeMessage;
 import org.nhind.xdm.streams.SmtpGatewayMessageSource;
 import org.nhindirect.common.mail.SMTPMailMessage;
 import org.nhindirect.xd.common.DirectMessage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+
+import lombok.extern.slf4j.Slf4j;
 
 
 @Component
-@ConditionalOnProperty(value="direct.xd.usestreams", havingValue = "true", matchIfMissing=false)
+@Profile("streams")
+@Slf4j
 public class StreamsSendClient extends AbstractSendClient
 {
 	@Autowired
 	protected SmtpGatewayMessageSource source;
-	
-	private static final Logger LOGGER = LoggerFactory.getLogger(StreamsSendClient.class);	
 	
 	public StreamsSendClient()
 	{
@@ -35,7 +35,7 @@ public class StreamsSendClient extends AbstractSendClient
 	@Override
 	public void send(DirectMessage message, String messageId, String suffix) throws MessagingException 
 	{
-		LOGGER.info("Building mess");
+		log.info("Building mess");
 		
 		final MimeMessage msg = buildMimeMessage(message, messageId, suffix, null);
 		
@@ -49,7 +49,7 @@ public class StreamsSendClient extends AbstractSendClient
 		final String messageid = msg.getMessageID();
 		source.forwardSMTPMessage(mailMessage);
 		
-		LOGGER.info("Successfully sent message with message id {} to STA via streams.", messageid);
+		log.info("Successfully sent message with message id {} to STA via streams.", messageid);
 	}
 	
 }

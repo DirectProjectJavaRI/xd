@@ -4,31 +4,30 @@ package org.nhind.xdm.streams;
 import org.nhindirect.common.mail.SMTPMailMessage;
 import org.nhindirect.common.mail.streams.SMTPMailMessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.cloud.stream.annotation.EnableBinding;
-import org.springframework.cloud.stream.annotation.Output;
-import org.springframework.messaging.MessageChannel;
+import org.springframework.cloud.stream.function.StreamBridge;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
 
-@ConditionalOnProperty(value="direct.xd.usestreams", havingValue = "true", matchIfMissing=false)
-@EnableBinding(SmtpGatewayMessageOutput.class)
+@Profile("streams")
+@Component
 public class SmtpGatewayMessageSource
 {	
 	protected static SmtpGatewayMessageSource messageSourceInstance;
 	
+	// Maps to the Spring Cloud Stream functional output binding name.
+	protected static final String OUT_BINDING_NAME = "direct-smtp-gateway-message-out-0";
+	
 	@Autowired
-	@Qualifier(SmtpGatewayMessageOutput.SMTP_GATEWAY_MESSAGE_OUTPUT)
-	private MessageChannel smtpGatewayChannel;
+	private StreamBridge streamBridge;
 	
 	public SmtpGatewayMessageSource()
 	{
 		messageSourceInstance = this;
 	}
 	
-	@Output(SmtpGatewayMessageOutput.SMTP_GATEWAY_MESSAGE_OUTPUT)
 	public <T> void forwardSMTPMessage(SMTPMailMessage msg) 
 	{
-		this.smtpGatewayChannel.send(SMTPMailMessageConverter.toStreamMessage(msg));
+		streamBridge.send(OUT_BINDING_NAME, SMTPMailMessageConverter.toStreamMessage(msg));
 	}
 
 	public static SmtpGatewayMessageSource getMessageSourceInstance()

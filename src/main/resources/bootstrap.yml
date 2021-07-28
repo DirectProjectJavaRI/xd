@@ -1,0 +1,29 @@
+server:
+  servlet:
+    context-path: /xd
+
+spring:
+  application:
+    name: direct-xd
+
+  jpa:
+    open_in_view: false
+    
+  main:
+    allow-bean-definition-overriding: true    
+
+  jmx:
+    default-domain:  direct-xd
+
+#Don't use rabbit as part of the health check
+management:
+  health:
+    rabbit:
+      enabled: false
+
+#unique jmx names to avoid collisions when running
+#multiple spring boot apps in an web container
+endpoints:
+  jmx:
+    default-domain: direct-xd
+    uniqueNames: true

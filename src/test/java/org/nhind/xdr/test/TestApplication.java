@@ -17,9 +17,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
+import org.springframework.boot.autoconfigure.r2dbc.R2dbcAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Primary;
@@ -27,8 +27,8 @@ import org.springframework.context.annotation.Primary;
 @SpringBootApplication(exclude = {
 	    DataSourceAutoConfiguration.class, 
 	    DataSourceTransactionManagerAutoConfiguration.class, 
-	    HibernateJpaAutoConfiguration.class})
-@EnableEurekaClient
+	    HibernateJpaAutoConfiguration.class,
+	    R2dbcAutoConfiguration.class})
 @ComponentScan(basePackages = {"org.nhind.xdm.springconfig", "org.nhind.xdm.streams", "org.nhind.xdm.impl"})
 public class TestApplication extends SpringBootServletInitializer 
 {

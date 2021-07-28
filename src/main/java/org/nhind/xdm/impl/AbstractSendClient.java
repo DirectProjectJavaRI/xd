@@ -14,16 +14,15 @@ import javax.mail.internet.MimeMultipart;
 
 import org.nhind.xdm.MimeSendClient;
 import org.nhindirect.xd.common.DirectMessage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public abstract class AbstractSendClient implements MimeSendClient
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractSendClient.class);	
-	
 	public MimeMessage buildMimeMessage(DirectMessage message, String messageId, String suffix, Session session) throws MessagingException
 	{
-		LOGGER.info("Building Mime message for sender.");
+		log.info("Building Mime message for sender.");
 		
         MimeMessage mmessage;
         Multipart mailBody;

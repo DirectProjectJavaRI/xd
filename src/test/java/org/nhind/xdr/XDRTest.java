@@ -21,6 +21,9 @@ THE POSSIBILITY OF SUCH DAMAGE.
 
 package org.nhind.xdr;
 
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import ihe.iti.xds_b._2007.ProvideAndRegisterDocumentSetRequestType;
 import ihe.iti.xds_b._2007.RetrieveDocumentSetRequestType;
 import ihe.iti.xds_b._2007.RetrieveDocumentSetResponseType;
@@ -28,14 +31,14 @@ import ihe.iti.xds_b._2007.RetrieveDocumentSetResponseType;
 import java.io.File;
 import java.io.InputStream;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
 
-import junit.framework.TestCase;
+import lombok.extern.slf4j.Slf4j;
 import oasis.names.tc.ebxml_regrep.xsd.rs._3.RegistryResponseType;
 
+import org.junit.jupiter.api.Test;
 import org.nhind.xdr.config.XdConfig;
 import org.nhindirect.xd.routing.impl.RoutingResolverImpl;
 import org.nhindirect.xd.transform.util.XmlUtils;
@@ -46,43 +49,14 @@ import com.gsihealth.auditclient.AuditMessageGenerator;
  *
  * @author vlewis
  */
-public class XDRTest extends TestCase 
+@Slf4j
+public class XDRTest 
 {
-    private static final Logger LOGGER = Logger.getLogger(XDRTest.class.getPackage().getName());
-    
-    /**
-     * Constructor
-     * 
-     * @param testName The test name
-     */
-    public XDRTest(String testName) {
-        super(testName);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see junit.framework.TestCase#setUp()
-     */
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see junit.framework.TestCase#tearDown()
-     */
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
     /**
      * Test of documentRepositoryProvideAndRegisterDocumentSetB method, of class XDR.
      */
     @SuppressWarnings("rawtypes")
+    @Test
 	public void testDocumentRepositoryProvideAndRegisterDocumentSetB() throws Exception {
         System.out.println("documentRepositoryProvideAndRegisterDocumentSetB");
         QName qname = new QName("urn:ihe:iti:xds-b:2007", "ProvideAndRegisterDocumentSetRequestType");
@@ -182,7 +156,7 @@ public class XDRTest extends TestCase
     {
         String file = File.createTempFile("xdaudit." + UUID.randomUUID().toString(), ".log").getAbsolutePath();
         
-        LOGGER.info("Logging to file : " + file);
+        log.info("Logging to file : " + file);
         
         return file;
     }

@@ -31,6 +31,7 @@ package org.nhind.xdr;
 import ihe.iti.xds_b._2007.ProvideAndRegisterDocumentSetRequestType;
 import ihe.iti.xds_b._2007.RetrieveDocumentSetRequestType;
 import ihe.iti.xds_b._2007.RetrieveDocumentSetResponseType;
+import lombok.extern.slf4j.Slf4j;
 import ihe.iti.xds_b._2007.ProvideAndRegisterDocumentSetRequestType.Document;
 
 import java.io.ByteArrayOutputStream;
@@ -48,7 +49,7 @@ import javax.xml.ws.WebServiceContext;
 
 import oasis.names.tc.ebxml_regrep.xsd.rs._3.RegistryResponseType;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.nhind.config.rest.AddressService;
 import org.nhind.config.rest.SettingService;
 import org.nhind.xdm.impl.SmtpSendClient;
@@ -66,8 +67,6 @@ import org.nhindirect.xd.transform.impl.DefaultXdsDirectDocumentsTransformer;
 import com.gsihealth.auditclient.AuditMessageGenerator;
 import com.gsihealth.auditclient.type.AuditMethodEnum;
 import org.nhindirect.xd.transform.parse.ParserHL7;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.nhindirect.xd.soap.SafeThreadData;
@@ -93,6 +92,7 @@ GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWE
 STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF 
 THE POSSIBILITY OF SUCH DAMAGE.
 */
+@Slf4j
 public abstract class DocumentRepositoryAbstract 
 {
     @Resource
@@ -114,8 +114,6 @@ public abstract class DocumentRepositoryAbstract
     private RoutingResolver resolver = null;
     private AuditMessageGenerator auditMessageGenerator = null;
     private XdsDirectDocumentsTransformer xdsDirectDocumentsTransformer = new DefaultXdsDirectDocumentsTransformer();
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(DocumentRepositoryAbstract.class);	
 
     /**
      * Handle an incoming XDR request with a
@@ -196,7 +194,7 @@ public abstract class DocumentRepositoryAbstract
                     replyEmail = StringUtils.contains(replyEmail, "@") ? replyEmail : "nhindirect@nhindirect.org";
                 }
 
-                LOGGER.info("SENDING EMAIL TO " + getResolver().getSmtpEndpoints(forwards) + " with message id "
+                log.info("SENDING EMAIL TO " + getResolver().getSmtpEndpoints(forwards) + " with message id "
                         + threadData.getMessageId());
 
                 // Construct message wrapper
@@ -261,7 +259,7 @@ public abstract class DocumentRepositoryAbstract
                     docs.add(doc);
                 }
 
-                LOGGER.info(" SENDING TO ENDPOINT " + to);
+                log.info(" SENDING TO ENDPOINT " + to);
 
                 DocumentRepositoryProxy proxy = new DocumentRepositoryProxy(endpointUrl, new DirectSOAPHandlerResolver());
                 
@@ -318,7 +316,7 @@ public abstract class DocumentRepositoryAbstract
 
 
             } catch (Exception ex) {
-                LOGGER.info("not sure what this ");
+                log.info("not sure what this ");
                 ex.printStackTrace();
             }
 
@@ -343,7 +341,7 @@ public abstract class DocumentRepositoryAbstract
                 }
                 catch (Exception e)
                 {
-                    LOGGER.warn("Unable to create resolver from URL, falling back to default");
+                    log.warn("Unable to create resolver from URL, falling back to default");
                     resolver = new RoutingResolverImpl();
                 }
             }

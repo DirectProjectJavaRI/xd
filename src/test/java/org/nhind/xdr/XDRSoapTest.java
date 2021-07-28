@@ -1,7 +1,6 @@
 package org.nhind.xdr;
 
 import static org.mockito.Mockito.when;
-import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 
 import javax.mail.Session;
@@ -17,7 +16,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.nhind.mail.service.DocumentRepository;
 import org.nhind.mail.service.XDDeliveryCallback;
@@ -29,9 +28,6 @@ import org.nhindirect.gateway.smtp.NotificationProducer;
 import org.nhindirect.xd.routing.RoutingResolver;
 import org.nhindirect.xd.transform.impl.DefaultMimeXdsTransformer;
 import org.parboiled.common.FileUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.messaging.MessageChannel;
 
 public class XDRSoapTest extends SpringBaseTest
 {
@@ -43,10 +39,6 @@ public class XDRSoapTest extends SpringBaseTest
 	
 	@Mock
 	protected NotificationProducer notificationProducer;
-	
-	@Qualifier("direct-smtp-mq-gateway")
-	@Autowired
-	private MessageChannel channel;
 	
 	@Test
 	public void testSoapTransaction() throws Exception
