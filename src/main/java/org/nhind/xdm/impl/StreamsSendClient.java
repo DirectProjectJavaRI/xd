@@ -13,14 +13,12 @@ import org.nhindirect.common.mail.SMTPMailMessage;
 import org.nhindirect.xd.common.DirectMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
 
 
 @Component
-@Profile("streams")
 @Slf4j
 public class StreamsSendClient extends AbstractSendClient
 {
@@ -38,7 +36,8 @@ public class StreamsSendClient extends AbstractSendClient
 		log.info("Building mess");
 		
 		final MimeMessage msg = buildMimeMessage(message, messageId, suffix, null);
-		
+
+		msg.saveChanges();
 		final List<InternetAddress> recipients = new LinkedList<>();
 		for (Address recip : msg.getAllRecipients())
 		{

@@ -9,11 +9,7 @@ direct:
     service:
       url:  http://localhost:8080/config-service
 
----
 spring:
-
-  profiles: streams
-
   cloud:
     stream:
       source: direct-smtp-gateway-message

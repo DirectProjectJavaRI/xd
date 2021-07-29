@@ -12,6 +12,7 @@ import javax.mail.internet.InternetAddress;
 
 import org.nhindirect.xd.routing.RoutingResolver;
 import org.nhind.xdm.boot.XDApplication;
+import org.nhind.xdm.streams.SmtpGatewayMessageSource;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -55,5 +56,12 @@ public class TestApplication extends SpringBootServletInitializer
 		when(resolver.getXdEndpoints(any())).thenReturn(Collections.singletonList(recipAddr.toString()));
 		
 		return resolver;
+	}
+	
+	@Bean 
+	@Primary
+	public SmtpGatewayMessageSource smtpGatewayMessageSource()
+	{
+		return mock(SmtpGatewayMessageSource.class);
 	}
 }
