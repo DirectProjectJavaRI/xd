@@ -30,55 +30,24 @@ package com.gsihealth.auditclient;
 
 import java.io.File;
 import java.util.UUID;
-import java.util.logging.Logger;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Test class for methods in the AuditMessageGenerator class.
  */
-public class AuditMessageGeneratorTest extends TestCase
+@Slf4j
+public class AuditMessageGeneratorTest
 {
-    private static final Logger LOGGER = Logger.getLogger(AuditMessageGeneratorTest.class.getPackage().getName());
-
-    /**
-     * Constructor.
-     * 
-     * @param testName
-     *            The test name
-     */
-    public AuditMessageGeneratorTest(String testName)
-    {
-        super(testName);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see junit.framework.TestCase#setUp()
-     */
-    @Override
-    protected void setUp() throws Exception
-    {
-        super.setUp();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see junit.framework.TestCase#tearDown()
-     */
-    @Override
-    protected void tearDown() throws Exception
-    {
-        super.tearDown();
-    }
 
     /**
      * Test the provideAndRegisterAudit method.
      * 
      * @throws Exception
      */
+	@Test
     public void testAuditMessageGenerator() throws Exception
     {
         AuditMessageGenerator amg = new AuditMessageGenerator(getLogfile());
@@ -89,7 +58,7 @@ public class AuditMessageGeneratorTest extends TestCase
     {
         String file = File.createTempFile("xdaudit." + UUID.randomUUID().toString(), ".log").getAbsolutePath();
 
-        LOGGER.info("Logging to file : " + file);
+        log.info("Logging to file : " + file);
 
         return file;
     }

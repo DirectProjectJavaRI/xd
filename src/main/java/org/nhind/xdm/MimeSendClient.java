@@ -30,11 +30,11 @@ import org.nhindirect.xd.common.DirectMessage;
  * 
  * @author vlewis
  */
-public interface MailClient
+public interface MimeSendClient
 {
 
     /**
-     * Mail a DirectMessage object.
+     * Sends a DirectMessage object.
      * 
      * @param message
      *            The DirectMessage wrapper.
@@ -42,5 +42,5 @@ public interface MailClient
      *            The message ID.
      * @throws MessagingException
      */
-    public void mail(DirectMessage message, String messageId, String suffix) throws MessagingException;
+    public void send(DirectMessage message, String messageId, String suffix) throws MessagingException;
 }

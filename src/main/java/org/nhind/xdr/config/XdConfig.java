@@ -30,18 +30,18 @@ package org.nhind.xdr.config;
 
 import org.nhind.config.rest.SettingService;
 import org.nhindirect.config.model.Setting;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Configuration class for XD related operations.
  * 
  * @author beau
  */
+@Slf4j
 public class XdConfig
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(XdConfig.class);	
-    
+
     protected SettingService settingService;
     
     /**
@@ -54,10 +54,10 @@ public class XdConfig
         MAIL_HOST("xd.MailHost", "localhost"), 
         MAIL_USER("xd.MailUser", "direct"), 
         MAIL_PASS("xd.MailPass"), 
-        AUDIT_METHOD("xd.AuditMethod"), 
+        AUDIT_METHOD("xd.AuditMethod", "file"), 
         AUDIT_HOST("xd.AuditHost"), 
         AUDIT_PORT("xd.AuditPort"), 
-        AUDIT_FILE("xd.AuditFile");
+        AUDIT_FILE("xd.AuditFile", "./auditFile.txt");
 
         private String key;
         private String dflt;
@@ -142,7 +142,7 @@ public class XdConfig
         }
         catch (Exception e)
         {
-            LOGGER.error("Error initializing the XD configuration");
+            log.error("Error initializing the XD configuration");
         }
     }
     
@@ -163,7 +163,7 @@ public class XdConfig
         	}
         	catch (Exception e)
         	{
-        		LOGGER.warn("Could not find configured value for " + xdSetting.getKey() + ".  Defaulting to " + xdSetting.getDefault());
+        		log.warn("Could not find configured value for " + xdSetting.getKey() + ".  Defaulting to " + xdSetting.getDefault());
         		value = xdSetting.getDefault();
         	}
 
