@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>xd</artifactId>
     <name>NHIN Direct XD* Web Endpoint</name>
-    <version>8.0.0</version>
+    <version>8.1.0-SNAPSHOT</version>
     <description>NHIN Direct XD Component</description>
     <inceptionYear>2010</inceptionYear>
     <packaging>war</packaging>
