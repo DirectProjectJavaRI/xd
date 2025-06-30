@@ -138,6 +138,20 @@
 		<dependency>
 		    <groupId>org.springframework.cloud</groupId>
 		    <artifactId>spring-cloud-starter-bootstrap</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.bouncycastle</groupId>
+					<artifactId>bcprov-jdk15on</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.bouncycastle</groupId>
+					<artifactId>bcmail-jdk15on</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.bouncycastle</groupId>
+					<artifactId>bcpkix-jdk15on</artifactId>
+				</exclusion>
+			</exclusions>		    
 		</dependency>		
 	    <dependency>
 	        <groupId>org.springframework.cloud</groupId>
@@ -155,6 +169,18 @@
 		            <groupId>org.codehaus.jackson</groupId>
 		            <artifactId>jackson-mapper-asl</artifactId>
 		        </exclusion>
+				<exclusion>
+					<groupId>org.bouncycastle</groupId>
+					<artifactId>bcprov-jdk15on</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.bouncycastle</groupId>
+					<artifactId>bcmail-jdk15on</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.bouncycastle</groupId>
+					<artifactId>bcpkix-jdk15on</artifactId>
+				</exclusion>		        
 		  </exclusions>		      
 	    </dependency>			    	           
         <dependency>
@@ -174,18 +200,18 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>xd-common</artifactId>
-            <version>8.0.0</version>
+            <version>8.1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>xdmail</artifactId>
-            <version>8.0.0</version>
+            <version>8.1.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>  
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>direct-msg-monitor-model</artifactId>
-            <version>8.0.0</version>
+            <version>8.1.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency> 
 		<dependency>
