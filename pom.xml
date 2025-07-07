@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>xd</artifactId>
     <name>NHIN Direct XD* Web Endpoint</name>
-    <version>8.0.0</version>
+    <version>8.1.0</version>
     <description>NHIN Direct XD Component</description>
     <inceptionYear>2010</inceptionYear>
     <packaging>war</packaging>
@@ -138,6 +138,20 @@
 		<dependency>
 		    <groupId>org.springframework.cloud</groupId>
 		    <artifactId>spring-cloud-starter-bootstrap</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.bouncycastle</groupId>
+					<artifactId>bcprov-jdk15on</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.bouncycastle</groupId>
+					<artifactId>bcmail-jdk15on</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.bouncycastle</groupId>
+					<artifactId>bcpkix-jdk15on</artifactId>
+				</exclusion>
+			</exclusions>		    
 		</dependency>		
 	    <dependency>
 	        <groupId>org.springframework.cloud</groupId>
@@ -155,6 +169,18 @@
 		            <groupId>org.codehaus.jackson</groupId>
 		            <artifactId>jackson-mapper-asl</artifactId>
 		        </exclusion>
+				<exclusion>
+					<groupId>org.bouncycastle</groupId>
+					<artifactId>bcprov-jdk15on</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.bouncycastle</groupId>
+					<artifactId>bcmail-jdk15on</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.bouncycastle</groupId>
+					<artifactId>bcpkix-jdk15on</artifactId>
+				</exclusion>		        
 		  </exclusions>		      
 	    </dependency>			    	           
         <dependency>
@@ -174,18 +200,18 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>xd-common</artifactId>
-            <version>8.0.0</version>
+            <version>8.1.0</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>xdmail</artifactId>
-            <version>8.0.0</version>
+            <version>8.1.0</version>
             <scope>test</scope>
         </dependency>  
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>direct-msg-monitor-model</artifactId>
-            <version>8.0.0</version>
+            <version>8.1.0</version>
             <scope>test</scope>
         </dependency> 
 		<dependency>
@@ -340,6 +366,15 @@
 		               </executions>
 		            </plugin>
 		             -->
+			        <plugin>
+			          <groupId>org.sonatype.central</groupId>
+			          <artifactId>central-publishing-maven-plugin</artifactId>
+			          <version>0.8.0</version>
+			          <extensions>true</extensions>
+			          <configuration>
+			            <publishingServerId>central</publishingServerId>
+			          </configuration>
+			        </plugin>    
                 </plugins>
             </build>
         </profile>
@@ -401,28 +436,6 @@
             </plugin>
         </plugins>
     </reporting>
-
-    <distributionManagement>
-        <site>
-            <id>nhind-site</id>
-            <name>NHIN Direct API publication site</name>
-            <url>sftp://api.nhindirect.org/x/www/api.nhindirect.org/java/site/xd/${project.version}
-            </url>
-        </site>
-        <snapshotRepository>
-            <id>sonatype-snapshot</id>
-            <name>Sonatype OSS Maven SNAPSHOT Repository</name>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-            <uniqueVersion>false</uniqueVersion>
-         </snapshotRepository>
-         <repository>
-            <id>sonatype-release</id>
-            <name>Sonatype OSS Maven Release Repositor</name>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-            <uniqueVersion>false</uniqueVersion>
-         </repository>
-
-    </distributionManagement>
 </project>
 
 
