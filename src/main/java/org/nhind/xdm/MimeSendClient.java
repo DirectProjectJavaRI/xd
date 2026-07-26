@@ -21,7 +21,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
 
 package org.nhind.xdm;
 
-import javax.mail.MessagingException;
+import jakarta.mail.MessagingException;
 
 import org.nhindirect.xd.common.DirectMessage;
 

@@ -32,7 +32,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.UUID;
 
-import javax.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
 
 import lombok.extern.slf4j.Slf4j;

@@ -1,7 +1,7 @@
 
 package org.xml.xml.schema._7f0d86bd.healthcare_security_audit;
 
-import javax.xml.bind.annotation.XmlRegistry;
+import jakarta.xml.bind.annotation.XmlRegistry;
 
 
 /**

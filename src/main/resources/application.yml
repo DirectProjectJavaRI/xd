@@ -4,15 +4,58 @@ info.build.name: '@project.name@'
 info.build.description: '@project.description@'
 info.build.version: '@project.version@'
 
+server:
+  servlet:
+    context-path: /xd
+
+#Default the security credentials to call the config service. Override these
+#for your deployment.
 direct:
+  webservices:
+    security:
+      basic:
+        user:
+          name: admin
+          password: d1r3ct;
+
   config:
     service:
-      url:  http://localhost:8080/config-service
+      url:  http://localhost:8082
+
+  xd:
+    usestreams: true
 
 spring:
+  config.import: 'optional:configserver:'
+
+  application:
+    name: direct-xd
+
+  jpa:
+    open_in_view: false
+
+  main:
+    allow-bean-definition-overriding: true
+
+  jmx:
+    default-domain:  direct-xd
+
   cloud:
     stream:
       source: direct-smtp-gateway-message
       bindings:
         direct-smtp-gateway-message-out-0:
           destination: direct-smtp-mq-gateway
+
+#Don't use rabbit as part of the health check
+management:
+  health:
+    rabbit:
+      enabled: false
+
+#unique jmx names to avoid collisions when running
+#multiple spring boot apps in an web container
+endpoints:
+  jmx:
+    default-domain: direct-xd
+    uniqueNames: true
