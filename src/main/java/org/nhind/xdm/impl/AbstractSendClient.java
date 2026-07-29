@@ -13,7 +13,9 @@ import jakarta.mail.internet.MimeBodyPart;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.internet.MimeMultipart;
 
+import org.apache.commons.lang3.StringUtils;
 import org.nhind.xdm.MimeSendClient;
+import org.nhindirect.common.mail.MDNStandard;
 import org.nhindirect.xd.common.DirectMessage;
 
 import lombok.extern.slf4j.Slf4j;
@@ -53,6 +55,15 @@ public abstract class AbstractSendClient implements MimeSendClient
         mmessage.setRecipients(Message.RecipientType.TO, addressTo);
         mmessage.setSubject(message.getSubject());
 
+        if (message.isFinalDestinationDeliveryRequested())
+        {
+            // The MDN must be routed back to whoever requested it -- the message's own
+            // sender (the XDR-originating gateway) -- not to the recipient we're sending to.
+            mmessage.setHeader(MDNStandard.Headers.DispositionNotificationTo, normalizeAddress(message.getSender()));
+            mmessage.setHeader(MDNStandard.Headers.DispositionNotificationOptions,
+                    MDNStandard.DispositionOption_TimelyAndReliable + "=optional,true");
+        }
+
         mailBody = new MimeMultipart();
 
         mainBody = new MimeBodyPart();
@@ -76,6 +87,15 @@ public abstract class AbstractSendClient implements MimeSendClient
         mmessage.setContent(mailBody);
 
         return new MimeMessageResult(mmessage, xdmFile);
+	}
+
+	/**
+	 * Strips a leading "mailto:" scheme (case-insensitive), if present, so notification
+	 * headers carry a bare email address rather than a URI.
+	 */
+	private static String normalizeAddress(String address)
+	{
+		return StringUtils.startsWithIgnoreCase(address, "mailto:") ? address.substring("mailto:".length()) : address;
 	}
 
 	/**

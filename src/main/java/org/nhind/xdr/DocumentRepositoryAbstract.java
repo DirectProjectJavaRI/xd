@@ -202,6 +202,8 @@ public abstract class DocumentRepositoryAbstract
                 message.setSubject("XD* Originated Message");
                 message.setBody("Please find the attached XDM file.");
                 message.setDirectDocuments(documents);
+                message.setFinalDestinationDeliveryRequested(
+                        Boolean.parseBoolean(threadData.getFinalDestinationDelivery()));
 
                 String fileName = threadData.getMessageId().replaceAll("urn:uuid:", "");
                 
