@@ -59,3 +59,152 @@ endpoints:
   jmx:
     default-domain: direct-xd
     uniqueNames: true
+
+---
+#TLS profile: enables HTTPS on the embedded server using a Spring SSL bundle built from an
+#inline, self-signed PEM certificate/key (CN=xddirect.com, SAN=DNS:xddirect.com). This is a
+#development/default certificate only - replace spring.ssl.bundle.pem.mybundle.keystore.*
+#with a CA-issued certificate for production use.
+#
+#Referencing external files instead of inlining PEM/base64 content:
+#spring.ssl.bundle.pem.mybundle.keystore.certificate and .private-key each accept either the
+#literal PEM text (as used below) OR a resource location string pointing at a file containing
+#that same PEM text - Spring resolves either form the same way it resolves any other Spring
+#Resource location. This is often easier to manage than inlining base64/PEM directly in YAML
+#when certificates rotate independently of application config, are managed by a separate
+#process (e.g. cert-manager, ACME/Let's Encrypt, an internal PKI), or you simply don't want
+#key material committed alongside this file. To use it, replace the block scalar (`|`) values
+#below with a location string, e.g.:
+#  keystore:
+#    certificate: file:/etc/xd/tls/server-cert.pem
+#    private-key: file:/etc/xd/tls/server-key.pem
+#`classpath:` locations work the same way (e.g. classpath:tls/server-cert.pem) if you'd rather
+#package the files inside the application jar/war than reference an absolute filesystem path.
+#A private key stored encrypted can be paired with .private-key-password to supply the
+#decryption passphrase (e.g. keystore.private-key-password: ${TLS_KEY_PASSWORD}).
+spring:
+  config:
+    activate:
+      on-profile: tls
+  ssl:
+    bundle:
+      pem:
+        mybundle:
+          keystore:
+            certificate: |
+              -----BEGIN CERTIFICATE-----
+              MIIDTzCCAjegAwIBAgIUbD6fcy9rmOXOMkr8jN+Kr+grIxcwDQYJKoZIhvcNAQEL
+              BQAwFzEVMBMGA1UEAwwMeGRkaXJlY3QuY29tMB4XDTI2MDgxMDEwMzQzMVoXDTM2
+              MDgwNzEwMzQzMVowFzEVMBMGA1UEAwwMeGRkaXJlY3QuY29tMIIBIjANBgkqhkiG
+              9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxT8/I6c6mD3/03w9Pc6kR2r4d/eogTJxDFiJ
+              MxVvoP3iHGyIPGkOfeHNfx0rioxxSTd2Ue9eHymKm3wl9KysjdZYXTMRqb+rV8HX
+              0Jp77PISr/BABY7PWr1j5oefodirV8M0jaEcG6CneGHGYHnj7pRIJQL5UIiTvQ3P
+              mInRX6zbXt/Q3FT/xE7eGAfCmykSqI3EPtTsJqC5tX+4/QxUHjtcKDdDzOjy3con
+              86Bn56fv69IlAe+2Rbd3uLv9hUqN0CR2ehB64d3c+sfVkhr8PCXMcj4D8NJrTpV7
+              BSOJL6ryzx2FmkUImTKx3Y2oCE5m5ITvoso3AYeS7r959DpERQIDAQABo4GSMIGP
+              MB0GA1UdDgQWBBSC/fDL2GpcDaQpnbfHh4BZtfpKbjAfBgNVHSMEGDAWgBSC/fDL
+              2GpcDaQpnbfHh4BZtfpKbjAPBgNVHRMBAf8EBTADAQH/MBcGA1UdEQQQMA6CDHhk
+              ZGlyZWN0LmNvbTAOBgNVHQ8BAf8EBAMCBaAwEwYDVR0lBAwwCgYIKwYBBQUHAwEw
+              DQYJKoZIhvcNAQELBQADggEBABC6vhuaIdpzamM212knoD+xWYK3Sf4f8jOO/LQ2
+              YVGWOA5oBbSPOOTG2c//jBpYPQ3cwqSZ8QaFBanPv4InwA85u366MU9bGlIg62Jx
+              w4yBrrRGVTlW06HBxOF4UCjO4+UCfysOd2c383d0+SZbEWMXwcwNr3BMlOMaMziC
+              ivS+6keDWyacPU9hLjyBoe8Crx5UAwZiXTw578moQEga0gSWeFBc73y5eDBS4jDc
+              ZlrCQ7czf7MrZtIAI1MbpCyp+SsE0CTCnQvIfw+jb71bJATdBfpkdEvafrE2KyRD
+              dv1tDIj+EmerVAFiVWDpCkjJvlZk36HUkPK4R3bNp5dnhfQ=
+              -----END CERTIFICATE-----
+            private-key: |
+              -----BEGIN PRIVATE KEY-----
+              MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDFPz8jpzqYPf/T
+              fD09zqRHavh396iBMnEMWIkzFW+g/eIcbIg8aQ594c1/HSuKjHFJN3ZR714fKYqb
+              fCX0rKyN1lhdMxGpv6tXwdfQmnvs8hKv8EAFjs9avWPmh5+h2KtXwzSNoRwboKd4
+              YcZgeePulEglAvlQiJO9Dc+YidFfrNte39DcVP/ETt4YB8KbKRKojcQ+1OwmoLm1
+              f7j9DFQeO1woN0PM6PLdyifzoGfnp+/r0iUB77ZFt3e4u/2FSo3QJHZ6EHrh3dz6
+              x9WSGvw8JcxyPgPw0mtOlXsFI4kvqvLPHYWaRQiZMrHdjagITmbkhO+iyjcBh5Lu
+              v3n0OkRFAgMBAAECggEAEB3x38zrScNPIw20x1caL0e7U7olx6DCgfq+AzGONH5q
+              Ol5X52/CImEP9IICq8h7/TqN7XX8n9k6HShQxaRSWSiZgcwJdnBV5M7O/pmQ5LSG
+              +F9OK+YWZViyUATm80eMAJjPs37lmBBRftGmbv2mtTjiiDus+Xqfb8QwIUupkwKd
+              AjGr71StfxMjwYDqCzmWpcGn6UiZQ2RjUVAAnE5+41WA95GcnhCP7YMLwWRSIOl/
+              1uek2LPwR5k6SdDr7rManHAEzlVDmXoJnMNt8wgyyd61HGZmx8E/4OUAAmgWA1WL
+              01gsmqRscv6e2MYNQqx5z7tEHseEfeWn46/mjC96ZQKBgQDvcgXJ9kHFslFknwnP
+              47auyeLDPmApWK9YrJ0tENExor0TV/VkVqXj/UEbKOHn2oOI2IxlXjvmTh7kG/Kh
+              yY3vmj/EAOTzo8nuB81neS8smG89WAXwLvPqCxbj9rBZ3ODbVLtUuu7bbeyUwZFy
+              3D0WrkHyHrTHHoagzJ2fL34ogwKBgQDS4lmE0a44shvvVLkhIR1+Pfps2sLA/QAd
+              +j23RJIuAwEE1Ig77w7/eubIyoydJ2fF2tao6kYlj8kOnVml8i+TeeQQZRaXszgq
+              ehNNhQDCM+tio00y3xO69VZ8UEYhufmy2iN44G9RYsXn+m4s0bowH9ZJeihOsI/A
+              fplDH9n1lwKBgC1XUBVQVmATRiphm0AMhLlQbWo/U4JA0uNdvF2eQ568jEUvcL5R
+              UhR8DmoQMcbvr9yn9N31HC6eOGdFi4prWj823EBHUxN3vnMecxzW68HsE5RwKJ+0
+              pGd7NhhwzDAYDVQ7FUYUJ8rRY+0/QkWXwtGaqc4pVl4mP6QPWwGbwq31AoGAXeKp
+              ygjz0IfzCd0lQouUrtR2/ilylSrN94qmGUZs8hEiTf003cHzYmhcAL60VW7qs1pX
+              QQJz0lsuPtRsygWFitm0YFww7765XafVmiiBivREcjiTsPdBuHVrWJMAdhlvAmI9
+              cp4w0QHxa/LBRDDm/G/gHfxFn6rZhPCX2RuAFOcCgYEAx6rTEy9YV4y0IHkLESTw
+              +HVzNZ78ZHTYE2ISkGw8doKPFBMmYyfjaj/WP6+t3QNqTmdlqn7NRj0sxKxazeCW
+              r4ECycY+MngOajUkcUDJ2aJM1eBbH43v8Op04DwPEBoKKk6zMm+23rUFtLAXmhIN
+              ckd0Fi7PgZUvqU+Ie/+Dq98=
+              -----END PRIVATE KEY-----
+
+server:
+  port: 9443
+  ssl:
+    bundle: mybundle
+
+---
+#mTLS profile: layers on top of the "tls" profile (activate both together, e.g.
+#--spring.profiles.active=tls,mtls) to additionally require client certificate
+#authentication. server.ssl.client-auth=need makes the TLS handshake itself fail for any
+#client that does not present a certificate chaining to a CA in the truststore below - this
+#is Spring Boot/Tomcat built-in behavior, no application code is involved.
+#
+#The truststore below ships a default, self-signed dev/test CA (CN=XD Direct Test Client CA)
+#so mTLS can be exercised out of the box. To trust real client certificates in a deployment,
+#override spring.ssl.bundle.pem.mybundle.truststore.certificate in your own application.yml
+#(or via a config-service/environment property) with your own CA certificate(s) - multiple
+#CA certificates can be concatenated in the same PEM value to trust more than one issuer.
+#
+#Referencing external files instead of inlining PEM/base64 content:
+#spring.ssl.bundle.pem.mybundle.truststore.certificate accepts the same two forms as the
+#keystore properties documented in the "tls" profile above - either literal inline PEM text,
+#or a resource location string. This is especially useful for a truststore, since a real
+#deployment's trusted-client-CA list tends to be larger and change more often than a single
+#server certificate (partners are onboarded/rotated independently of app releases). Instead of
+#concatenating every CA cert as inline PEM here, you can point at an externally-managed file
+#(or directory of files) that something else (config management, a secrets manager, an ops
+#team) maintains, e.g.:
+#  truststore:
+#    certificate: file:/etc/xd/tls/trusted-client-cas.pem
+#where trusted-client-cas.pem is itself just multiple concatenated `-----BEGIN
+#CERTIFICATE-----`...`-----END CERTIFICATE-----` blocks, one per trusted CA. A `classpath:`
+#location works the same way if you'd rather ship the trust bundle inside the jar/war.
+spring:
+  config:
+    activate:
+      on-profile: mtls
+  ssl:
+    bundle:
+      pem:
+        mybundle:
+          truststore:
+            certificate: |
+              -----BEGIN CERTIFICATE-----
+              MIIDNzCCAh+gAwIBAgIUauqLzQTwrHuqZh+j7Y5E6a41gHIwDQYJKoZIhvcNAQEL
+              BQAwIzEhMB8GA1UEAwwYWEQgRGlyZWN0IFRlc3QgQ2xpZW50IENBMB4XDTI2MDgx
+              MDEwNDc0OVoXDTM2MDgwNzEwNDc0OVowIzEhMB8GA1UEAwwYWEQgRGlyZWN0IFRl
+              c3QgQ2xpZW50IENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1Fgk
+              iJyojyZAmbQCcCWe7yOkh9xt9ZiHdGuG8LlaVoIK3i9oyq3/zX4O3QUqvqoJTnnh
+              VFGj9bqIkT43Gvtr7OJNnoHUG6EUWy6vvoGr1W/17pdGwgxvXp0aICUchW4sVZoB
+              fvHhdWTM5kma+2RkVRCSKzYBzVzgTB5Hh7mHVfDoL4W6VkiQ36Q6LGhp3bCIZI9c
+              ZeP5peI0SF7lGVZDbmt3ZQwWAi1W4QDDRrAw1TGvJuFeNyWIJ6oJlzSOrUwzcvhh
+              UNrYK2rMM6Qs2q5meU41T6+JUoYSt0U3Qt+UM726xuvkjdEp+edAhRZfw04f8oWy
+              MSVSi19IcduBvpDm6QIDAQABo2MwYTAdBgNVHQ4EFgQUCDv+QtE7uVzjH19n9WZF
+              XRLtTzswHwYDVR0jBBgwFoAUCDv+QtE7uVzjH19n9WZFXRLtTzswDwYDVR0TAQH/
+              BAUwAwEB/zAOBgNVHQ8BAf8EBAMCAQYwDQYJKoZIhvcNAQELBQADggEBABrJNkKy
+              vaNzphCNOd9gK1ZJkOOFOBKMJiPl88R9dIe+H0BChhSgqnJov/qARLtQJOhw+87U
+              4ReblLX0zGM4YjEMxqQwnNLOUkIHff3vNjoteKHmqIY9MaBKoYFu6IbygVcg5v/W
+              ECI/DcJoCd6la79SSlZnj7GRVE+So3JIS94IuPswktLBhgbrrTDD0G8FQ/Ja/b21
+              jtC3Dmwe6RnzCtYVaNlEfyVgRXumEHC/QvzbKtjFRiFT/batityJrOFM5UVgDktD
+              B8X3f/SoI42llwuHrTp0y+7uyDVCRLWNMd79ljBxToy5gJ5JFCTRH8yQTsa8GLtH
+              VfZiQc+ESE9w/eU=
+              -----END CERTIFICATE-----
+
+server:
+  ssl:
+    client-auth: need
