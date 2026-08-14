@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>xd</artifactId>
     <name>NHIN Direct XD* Web Endpoint</name>
-    <version>9.0.0-SNAPSHOT</version>
+    <version>9.0.0</version>
     <description>NHIN Direct XD Component</description>
     <inceptionYear>2010</inceptionYear>
     <packaging>war</packaging>
@@ -176,23 +176,23 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>xd-common</artifactId>
-            <version>9.0.0-SNAPSHOT</version>
+            <version>9.0.0</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>direct-common</artifactId>
-            <version>9.0.0-SNAPSHOT</version>
+            <version>9.0.0</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>xdmail</artifactId>
-            <version>9.0.0-SNAPSHOT</version>
+            <version>9.0.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>direct-msg-monitor-model</artifactId>
-            <version>9.0.0-SNAPSHOT</version>
+            <version>9.0.0</version>
             <scope>test</scope>
         </dependency>
 		<dependency>
