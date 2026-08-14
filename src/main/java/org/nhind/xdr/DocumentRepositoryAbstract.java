@@ -40,12 +40,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.annotation.Resource;
-import javax.mail.util.ByteArrayDataSource;
+import jakarta.activation.DataHandler;
+import jakarta.activation.DataSource;
+import jakarta.annotation.Resource;
+import jakarta.mail.util.ByteArrayDataSource;
 import javax.naming.InitialContext;
-import javax.xml.ws.WebServiceContext;
+import jakarta.xml.ws.WebServiceContext;
 
 import oasis.names.tc.ebxml_regrep.xsd.rs._3.RegistryResponseType;
 
@@ -202,6 +202,8 @@ public abstract class DocumentRepositoryAbstract
                 message.setSubject("XD* Originated Message");
                 message.setBody("Please find the attached XDM file.");
                 message.setDirectDocuments(documents);
+                message.setFinalDestinationDeliveryRequested(
+                        Boolean.parseBoolean(threadData.getFinalDestinationDelivery()));
 
                 String fileName = threadData.getMessageId().replaceAll("urn:uuid:", "");
                 

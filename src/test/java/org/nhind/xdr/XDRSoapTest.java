@@ -3,18 +3,19 @@ package org.nhind.xdr;
 import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.any;
 
-import javax.mail.Session;
+import jakarta.mail.Session;
 
+import java.io.InputStream;
 import java.util.Collections;
 
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.mail.Message.RecipientType;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
-import javax.mail.util.ByteArrayDataSource;
+import jakarta.activation.DataHandler;
+import jakarta.activation.DataSource;
+import jakarta.mail.Message.RecipientType;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeBodyPart;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMultipart;
+import jakarta.mail.util.ByteArrayDataSource;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -25,15 +26,11 @@ import org.nhind.xdr.test.SpringBaseTest;
 import org.nhindirect.common.mail.SMTPMailMessage;
 import org.nhindirect.common.tx.impl.DefaultTxDetailParser;
 import org.nhindirect.gateway.smtp.NotificationProducer;
-import org.nhindirect.xd.routing.RoutingResolver;
+import org.nhindirect.xd.common.SyntheticMetadataDefaults;
 import org.nhindirect.xd.transform.impl.DefaultMimeXdsTransformer;
-import org.parboiled.common.FileUtils;
 
 public class XDRSoapTest extends SpringBaseTest
 {
-	@Mock
-	protected RoutingResolver resolver;
-	
 	@Mock
 	protected XDDeliveryCallback xdDeliveryCallback;
 	
@@ -49,7 +46,11 @@ public class XDRSoapTest extends SpringBaseTest
 		when(resolver.hasXdEndpoints(any())).thenReturn(true);
 		when(resolver.getXdEndpoints(any())).thenReturn(Collections.singletonList(recipAddr.toString()));
 		
-		final byte[] xmdZip = FileUtils.readAllBytesFromResource("xdm/xdm.zip");
+		final byte[] xmdZip;
+		try (InputStream is = getClass().getClassLoader().getResourceAsStream("xdm/xdm.zip"))
+		{
+			xmdZip = is.readAllBytes();
+		}
 	    
 		final MimeMultipart multipart = new MimeMultipart();
 		
@@ -70,8 +71,9 @@ public class XDRSoapTest extends SpringBaseTest
 		
 		final SMTPMailMessage mailMessage = new SMTPMailMessage(msg, Collections.singletonList(recipAddr), sendAddr);
 		
-		final XDDeliveryCore deliveryCore = new XDDeliveryCore(resolver, xdDeliveryCallback, new DefaultTxDetailParser(), 
-				new DefaultMimeXdsTransformer(), new DocumentRepository(), notificationProducer, "http://localhost:8080/xd/services/DocumentRepository_Service");
+		final XDDeliveryCore deliveryCore = new XDDeliveryCore(resolver, xdDeliveryCallback, new DefaultTxDetailParser(),
+				new DefaultMimeXdsTransformer(new SyntheticMetadataDefaults()), new DocumentRepository(), notificationProducer,
+				"http://localhost:8080/xd/services/DocumentRepository_Service", Collections.emptyList());
 		
 		deliveryCore.processAndDeliverXDMessage(mailMessage);
 		

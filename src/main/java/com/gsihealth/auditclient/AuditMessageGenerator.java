@@ -24,8 +24,8 @@ import java.io.FileOutputStream;
 import java.io.StringWriter;
 import java.util.List;
 
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.Marshaller;
+import jakarta.xml.bind.JAXBElement;
+import jakarta.xml.bind.Marshaller;
 import javax.xml.namespace.QName;
 
 import org.xml.xml.schema._7f0d86bd.healthcare_security_audit.ActiveParticipantType;
@@ -323,7 +323,7 @@ public class AuditMessageGenerator {
         String ret = null;
 
         try {
-            javax.xml.bind.JAXBContext jc = javax.xml.bind.JAXBContext.newInstance(factory);
+            jakarta.xml.bind.JAXBContext jc = jakarta.xml.bind.JAXBContext.newInstance(factory);
             Marshaller u = jc.createMarshaller();
 
             StringWriter sw = new StringWriter();

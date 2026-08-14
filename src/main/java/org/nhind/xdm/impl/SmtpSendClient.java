@@ -23,12 +23,11 @@ package org.nhind.xdm.impl;
 
 import java.util.Properties;
 
-import javax.mail.Authenticator;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.MimeMessage;
+import jakarta.mail.Authenticator;
+import jakarta.mail.MessagingException;
+import jakarta.mail.PasswordAuthentication;
+import jakarta.mail.Session;
+import jakarta.mail.Transport;
 
 import org.apache.commons.lang3.StringUtils;
 import org.nhindirect.xd.common.DirectMessage;
@@ -64,7 +63,6 @@ public class SmtpSendClient extends AbstractSendClient
     public void send(DirectMessage message, String messageId, String suffix) throws MessagingException
     {    	
         boolean debug = false;
-        java.security.Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
 
         // Set the host SMTP address
         final Properties props = new Properties();
@@ -80,22 +78,29 @@ public class SmtpSendClient extends AbstractSendClient
 
 
         // Build message object
-        final MimeMessage mmessage = this.buildMimeMessage(message, messageId, suffix, session);
+        final MimeMessageResult result = this.buildMimeMessage(message, messageId, suffix, session);
 
-        Transport.send(mmessage);
+        try
+        {
+            Transport.send(result.mimeMessage());
+        }
+        finally
+        {
+            deleteAttachmentFile(result.attachmentFile());
+        }
     }
 
     /**
      * SimpleAuthenticator is used to do simple authentication when the SMTP
      * server requires it.
      */
-    private class SMTPAuthenticator extends javax.mail.Authenticator
+    private class SMTPAuthenticator extends jakarta.mail.Authenticator
     {
 
         /*
          * (non-Javadoc)
-         * 
-         * @see javax.mail.Authenticator#getPasswordAuthentication()
+         *
+         * @see jakarta.mail.Authenticator#getPasswordAuthentication()
          */
         @Override
         public PasswordAuthentication getPasswordAuthentication()

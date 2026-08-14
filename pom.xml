@@ -4,29 +4,29 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>xd</artifactId>
     <name>NHIN Direct XD* Web Endpoint</name>
-    <version>8.1.0</version>
+    <version>9.0.0</version>
     <description>NHIN Direct XD Component</description>
     <inceptionYear>2010</inceptionYear>
     <packaging>war</packaging>
-    <url>https://github.com/DirectProjectJavaRI/xd</url>   
+    <url>https://github.com/DirectProjectJavaRI/xd</url>
 	<scm>
 		<url>scm:git:https://github.com/DirectProjectJavaRI/xd.git</url>
 		<connection>scm:git:https://github.com/DirectProjectJavaRI/xd.git</connection>
 	</scm>
     <prerequisites>
         <maven>3.5.0</maven>
-    </prerequisites>	
+    </prerequisites>
     <parent>
 	   <groupId>org.springframework.boot</groupId>
 	   <artifactId>spring-boot-starter-parent</artifactId>
-	   <version>2.5.2</version>
+	   <version>4.1.0</version>
 	   <relativePath />
-    </parent>      
+    </parent>
     <developers>
         <developer>
             <name>Vincent Lewis</name>
             <email>vincent.lewis@gsihealth.com</email>
-        </developer>   
+        </developer>
         <developer>
             <name>Beau Grantham</name>
             <email>bgrantha@harris.com</email>
@@ -34,12 +34,12 @@
         <developer>
             <name>Greg Meyer</name>
             <email>gmeyer@cerner.com</email>
-        </developer>        
+        </developer>
      </developers>
     <organization>
         <name>NHIN Direct</name>
         <url>http://nhindirect.org</url>
-    </organization> 
+    </organization>
     <licenses>
        <license>
           <name>New BSD License</name>
@@ -48,63 +48,63 @@
     </licenses>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<apache.cxf.version>3.2.7</apache.cxf.version>
+		<apache.cxf.version>4.2.2</apache.cxf.version>
 	</properties>
 	<dependencyManagement>
-		<dependencies>											
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-dependencies</artifactId>
-				<version>2.5.2</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
+		<dependencies>
 	        <dependency>
 	            <groupId>io.pivotal.spring.cloud</groupId>
 	            <artifactId>spring-cloud-services-dependencies</artifactId>
-	            <version>3.3.0</version>
+	            <version>4.4.1</version>
 	            <type>pom</type>
 	            <scope>import</scope>
-	        </dependency>				
+	        </dependency>
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-starter-parent</artifactId>
-				 <version>2020.0.3</version>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				 <version>2025.1.2</version>
 				<type>pom</type>
-				<scope>import</scope>		
-			</dependency>											
+				<scope>import</scope>
+			</dependency>
+			<!-- Pinned below 2025.1.2's managed 5.0.2 to avoid https://github.com/spring-cloud/spring-cloud-stream/issues/3203
+			     (ClassCastException on output-only StreamBridge bindings). Remove once a fixed release is available. -->
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-stream</artifactId>
+				<version>5.0.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-stream-binder-rabbit</artifactId>
+				<version>5.0.1</version>
+			</dependency>
 		</dependencies>
-	</dependencyManagement>		         
+	</dependencyManagement>
     <dependencies>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
 		<dependency>
 		    <groupId>org.apache.cxf</groupId>
 		    <artifactId>cxf-spring-boot-starter-jaxws</artifactId>
 		    <version>${apache.cxf.version}</version>
-		</dependency>    
+		</dependency>
 		<dependency>
 		    <groupId>org.apache.cxf</groupId>
 		    <artifactId>cxf-rt-bindings-xml</artifactId>
 		    <version>${apache.cxf.version}</version>
-		</dependency>  
+		</dependency>
 		<dependency>
 		    <groupId>org.apache.cxf</groupId>
 		    <artifactId>cxf-rt-bindings-soap</artifactId>
 		    <version>${apache.cxf.version}</version>
-		</dependency>   		 		
+		</dependency>
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-frontend-jaxws</artifactId>
             <version>${apache.cxf.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.geronimo.specs</groupId>
-                    <artifactId>geronimo-activation_1.1_spec</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.geronimo.specs</groupId>
-                    <artifactId>geronimo-javamail_1.4_spec</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.cxf</groupId>
@@ -120,11 +120,15 @@
 	    <dependency>
 	    	<groupId>org.springframework.boot</groupId>
 	    	<artifactId>spring-boot-starter-security</artifactId>
-	    </dependency>         
+	    </dependency>
 	    <dependency>
 	        <groupId>org.springframework.boot</groupId>
 	        <artifactId>spring-boot-configuration-processor</artifactId>
-	    </dependency>  
+	    </dependency>
+	    <dependency>
+	    	<groupId>org.springframework.boot</groupId>
+	    	<artifactId>spring-boot-starter-mail</artifactId>
+	    </dependency>
 	    <dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-config</artifactId>
@@ -133,26 +137,8 @@
 		            <groupId>org.bouncycastle</groupId>
 		            <artifactId>bcpkix-jdk15on</artifactId>
 		        </exclusion>
-		    </exclusions>				
+		    </exclusions>
 		</dependency>
-		<dependency>
-		    <groupId>org.springframework.cloud</groupId>
-		    <artifactId>spring-cloud-starter-bootstrap</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>org.bouncycastle</groupId>
-					<artifactId>bcprov-jdk15on</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.bouncycastle</groupId>
-					<artifactId>bcmail-jdk15on</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.bouncycastle</groupId>
-					<artifactId>bcpkix-jdk15on</artifactId>
-				</exclusion>
-			</exclusions>		    
-		</dependency>		
 	    <dependency>
 	        <groupId>org.springframework.cloud</groupId>
 	        <artifactId>spring-cloud-stream</artifactId>
@@ -160,7 +146,7 @@
 	    <dependency>
 	        <groupId>org.springframework.cloud</groupId>
 	        <artifactId>spring-cloud-starter-stream-rabbit</artifactId>
-	    </dependency> 	    		
+	    </dependency>
 	    <dependency>
 	      <groupId>io.pivotal.spring.cloud</groupId>
 	      <artifactId>spring-cloud-services-starter-config-client</artifactId>
@@ -180,19 +166,9 @@
 				<exclusion>
 					<groupId>org.bouncycastle</groupId>
 					<artifactId>bcpkix-jdk15on</artifactId>
-				</exclusion>		        
-		  </exclusions>		      
-	    </dependency>			    	           
-        <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>javax.activation</groupId>
-                    <artifactId>activation</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+				</exclusion>
+		  </exclusions>
+	    </dependency>
         <dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
@@ -200,32 +176,35 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>xd-common</artifactId>
-            <version>8.1.0</version>
+            <version>9.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>direct-common</artifactId>
+            <version>9.0.0</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>xdmail</artifactId>
-            <version>8.1.0</version>
+            <version>9.0.0</version>
             <scope>test</scope>
-        </dependency>  
+        </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>direct-msg-monitor-model</artifactId>
-            <version>8.1.0</version>
+            <version>9.0.0</version>
             <scope>test</scope>
-        </dependency> 
-		<dependency>
-		    <groupId>org.springframework.cloud</groupId>
-		    <artifactId>spring-cloud-stream</artifactId>
-		    <type>test-jar</type>
-		    <scope>test</scope>
-		    <classifier>test-binder</classifier>
-		</dependency> 
+        </dependency>
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter-test</artifactId>
 		    <scope>test</scope>
-		</dependency>		                     
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework.cloud</groupId>
+		    <artifactId>spring-cloud-stream-test-binder</artifactId>
+		    <scope>test</scope>
+		</dependency>
     </dependencies>
 
     <build>
@@ -251,8 +230,8 @@
 
                 <configuration>
                     <fork>true</fork>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>17</source>
+                    <target>17</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -272,113 +251,73 @@
                     </webResources>
                 </configuration>
             </plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		    <plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-source-plugin</artifactId>
+		        <executions>
+		          <execution>
+		            <goals>
+		              <goal>jar</goal>
+		            </goals>
+		          </execution>
+		        </executions>
+		    </plugin>
+	            <plugin>
+	                <groupId>org.apache.maven.plugins</groupId>
+	                <artifactId>maven-javadoc-plugin</artifactId>
+	                <configuration>
+					    <additionalJOption>-Xdoclint:none</additionalJOption>
+						<charset>UTF-8</charset>
+						<docencoding>UTF-8</docencoding>
+						<docfilessubdirs>true</docfilessubdirs>
+						<detectJavaApiLink>true</detectJavaApiLink>
+						<detectLinks>true</detectLinks>
+						<source>17</source>
+						<show>public</show>
+	                    <excludePackageNames>
+	                        oasis.names.tc.ebxml_regrep.xsd:ihe.iti.xds_b._2007
+	                    </excludePackageNames>
+	                </configuration>
+		            <executions>
+		              <execution>
+		                <phase>package</phase>
+		                <id>attach-javadocs</id>
+		                <goals>
+		                  <goal>jar</goal>
+		                </goals>
+		              </execution>
+		            </executions>
+	            </plugin>
+	            <!-- for releases only
+		        <plugin>
+	               <groupId>org.apache.maven.plugins</groupId>
+	               <artifactId>maven-gpg-plugin</artifactId>
+	               <executions>
+	                 <execution>
+	                  <id>sign-artifacts</id>
+	                     <phase>package</phase>
+	                     <goals>
+	                        <goal>sign</goal>
+	                     </goals>
+	                 </execution>
+	               </executions>
+	            </plugin>
+	             -->
+		        <plugin>
+		          <groupId>org.sonatype.central</groupId>
+		          <artifactId>central-publishing-maven-plugin</artifactId>
+		          <version>0.8.0</version>
+		          <extensions>true</extensions>
+		          <configuration>
+		            <publishingServerId>central</publishingServerId>
+		          </configuration>
+		        </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <id>endorsed</id>
-            <activation>
-                <property>
-                    <name>sun.boot.class.path</name>
-                </property>
-            </activation>
-            <build>
-                <plugins>
-					<plugin>
-						<groupId>org.springframework.boot</groupId>
-						<artifactId>spring-boot-maven-plugin</artifactId>			
-					</plugin>	                
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-compiler-plugin</artifactId>
-                        <configuration>
-                            <!--
-                                javaee6 contains upgrades of APIs contained within the JDK
-                                itself. As such these need to be placed on the bootclasspath,
-                                rather than classpath of the compiler. If you don't make use of
-                                these new updated API, you can delete the profile. On non-SUN
-                                jdk, you will need to create a similar profile for your jdk,
-                                with the similar property as sun.boot.class.path in Sun's JDK.
-                            -->
-                            <compilerArguments>
-                                <bootclasspath>${settings.localRepository}/javax/javaee-endorsed-api/6.0/javaee-endorsed-api-6.0.jar${path.separator}${sun.boot.class.path}
-                                </bootclasspath>
-                            </compilerArguments>
-                        </configuration>
-                        <dependencies>
-                            <dependency>
-                                <groupId>javax</groupId>
-                                <artifactId>javaee-endorsed-api</artifactId>
-                                <version>6.0</version>
-                            </dependency>
-                        </dependencies>
-                    </plugin>
-				    <plugin>
-				        <groupId>org.apache.maven.plugins</groupId>
-				        <artifactId>maven-source-plugin</artifactId>
-				        <executions>
-				          <execution>
-				            <goals>
-				              <goal>jar</goal>
-				            </goals>
-				          </execution>
-				        </executions>
-				    </plugin>
-		            <plugin>
-		                <groupId>org.apache.maven.plugins</groupId>
-		                <artifactId>maven-javadoc-plugin</artifactId>
-		                <configuration>
-						    <additionalJOption>-Xdoclint:none</additionalJOption>
-							<charset>UTF-8</charset>
-							<docencoding>UTF-8</docencoding>
-							<docfilessubdirs>true</docfilessubdirs>
-							<detectJavaApiLink>true</detectJavaApiLink>
-							<detectLinks>true</detectLinks>
-							<source>1.8</source>
-							<show>public</show>
-		                    <excludePackageNames>
-		                        oasis.names.tc.ebxml_regrep.xsd:ihe.iti.xds_b._2007
-		                    </excludePackageNames>
-		                </configuration>
-			            <executions>
-			              <execution>
-			                <phase>package</phase>
-			                <id>attach-javadocs</id>
-			                <goals>
-			                  <goal>jar</goal>
-			                </goals>
-			              </execution>
-			            </executions>
-		            </plugin>
-		            <!-- for releases only	            
-			        <plugin>
-		               <groupId>org.apache.maven.plugins</groupId>
-		               <artifactId>maven-gpg-plugin</artifactId>
-		               <executions>
-		                 <execution>
-		                  <id>sign-artifacts</id>
-		                     <phase>package</phase>
-		                     <goals>
-		                        <goal>sign</goal>
-		                     </goals>
-		                 </execution>
-		               </executions>
-		            </plugin>
-		             -->
-			        <plugin>
-			          <groupId>org.sonatype.central</groupId>
-			          <artifactId>central-publishing-maven-plugin</artifactId>
-			          <version>0.8.0</version>
-			          <extensions>true</extensions>
-			          <configuration>
-			            <publishingServerId>central</publishingServerId>
-			          </configuration>
-			        </plugin>    
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 
     <reporting>
         <plugins>
@@ -396,7 +335,7 @@
 					<docfilessubdirs>true</docfilessubdirs>
 					<detectJavaApiLink>true</detectJavaApiLink>
 					<detectLinks>true</detectLinks>
-					<source>1.8</source>
+					<source>17</source>
 					<show>public</show>
                     <excludePackageNames>
                         oasis.names.tc.ebxml_regrep.xsd:ihe.iti.xds_b._2007
@@ -407,7 +346,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
                 <configuration>
-                    <targetJdk>1.8</targetJdk>
+                    <targetJdk>17</targetJdk>
                 </configuration>
             </plugin>
             <plugin>
@@ -437,11 +376,3 @@
         </plugins>
     </reporting>
 </project>
-
-
-
-
-
-
-
-
